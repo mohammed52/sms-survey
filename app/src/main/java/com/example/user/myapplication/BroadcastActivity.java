@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,9 @@ public class BroadcastActivity extends AppCompatActivity {
 
     public void onClickBroadcastButtonListener(View view) {
         Log.v("MAP", "send sms ?");
+
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage("+923137590210", null, "what is your name ?", null, null);
 
 //        ActivityCompat.requestPermissions(BroadcastActivity.this,
 //                new String[]{Manifest.permission.SEND_SMS},
