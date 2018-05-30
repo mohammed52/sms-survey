@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
     public void onClickUpdateContactsButtonListener(View view) {
         Log.v("MAP", "read file");
         Log.v("MAP", Environment.getExternalStorageDirectory().getAbsolutePath());
-        CSVReader reader = new CSVReader(new FileReader(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Download/filtered.csv"));
-        List myEntries = reader.readAll();
+//        CSVReader reader = new CSVReader(new FileReader(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Download/filtered.csv"));
+//        List myEntries = reader.readAll();
 
     }
 }

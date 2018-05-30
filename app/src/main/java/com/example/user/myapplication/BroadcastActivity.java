@@ -25,9 +25,9 @@ public class BroadcastActivity extends AppCompatActivity {
     public void onClickBroadcastButtonListener(View view) {
         Log.v("MAP", "send sms ?");
 
-        ActivityCompat.requestPermissions(BroadcastActivity.this,
-                new String[]{Manifest.permission.SEND_SMS},
-                1);
+//        ActivityCompat.requestPermissions(BroadcastActivity.this,
+//                new String[]{Manifest.permission.SEND_SMS},
+//                1);
     }
 
     public void onRequestPermissionsResult(int requestCode,
