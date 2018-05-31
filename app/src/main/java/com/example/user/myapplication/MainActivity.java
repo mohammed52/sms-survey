@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private List<MuminSample> muminSamples = new ArrayList<>();
 
     private void readMumineenData() {
-//        InputStream is = getResources().openRawResource(R.raw.filtered);
+//        InputStream is = getResources().openRawResource(R.raw.filtered); working ?
         InputStream is = null;
         try {
             is = new FileInputStream("/storage/sdcard/MAP/filtered.csv");
