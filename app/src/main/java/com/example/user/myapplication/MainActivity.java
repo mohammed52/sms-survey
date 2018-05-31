@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.opencsv.CSVReader;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,48 +56,53 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
     private List<MuminSample> muminSamples = new ArrayList<>();
 
-    private void readMumineenData(){
-        InputStream is = getResources().openRawResource(R.raw.filtered);
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(is, Charset.forName("UTF-8"))
-        );
-        String line = "";
+    private void readMumineenData() {
+//        InputStream is = getResources().openRawResource(R.raw.filtered);
+        InputStream is = null;
         try {
-
-            // step over header
-            reader.readLine();
-
-            while((line = reader.readLine()) != null){
-                Log.d("MAP", "line: "+ line + "\n");
-                // split by ','
-                String[] tokens = line.split(",");
-
-                // read the data
-                MuminSample sample = new MuminSample();
-                sample.setIts(Integer.parseInt(tokens[0]));
-                sample.setHofIts(Integer.parseInt(tokens[1]));
-                sample.setAge(Integer.parseInt(tokens[2]));
+            is = new FileInputStream("/storage/sdcard/MAP/filtered.csv");
 
 
-                sample.setGender(tokens[3].toCharArray()[0]);
-                sample.setMobileNo(new BigInteger(tokens[4]));
-                sample.setFullName(tokens[5]);
-                sample.setCountFamilyMembers(Integer.parseInt(tokens[6]));
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(is, Charset.forName("UTF-8"))
+            );
+            String line = "";
+            try {
 
-                muminSamples.add(sample);
-                Log.d("MAP", "just created: "+ sample);
+                // step over header
+                reader.readLine();
 
+                while ((line = reader.readLine()) != null) {
+                    Log.d("MAP", "line: " + line + "\n");
+                    // split by ','
+                    String[] tokens = line.split(",");
+
+                    // read the data
+                    MuminSample sample = new MuminSample();
+                    sample.setIts(Integer.parseInt(tokens[0]));
+                    sample.setHofIts(Integer.parseInt(tokens[1]));
+                    sample.setAge(Integer.parseInt(tokens[2]));
+
+
+                    sample.setGender(tokens[3].toCharArray()[0]);
+                    sample.setMobileNo(new BigInteger(tokens[4]));
+                    sample.setFullName(tokens[5]);
+                    sample.setCountFamilyMembers(Integer.parseInt(tokens[6]));
+
+                    muminSamples.add(sample);
+                    Log.d("MAP", "just created: " + sample);
+
+                }
+            } catch (IOException e) {
+                Log.wtf("MAP", "Error reading data file on line " + line, e);
+                e.printStackTrace();
             }
-        } catch (IOException e){
-            Log.wtf("MAP", "Error reading data file on line "+line, e);
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-
-
-
 
 
     }
