@@ -14,6 +14,7 @@
         android:layout_marginStart="28dp"
         android:layout_marginTop="28dp"
         android:text="Settings"
+        android:clickable="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button4" />
 
@@ -24,6 +25,7 @@
         android:layout_marginStart="28dp"
         android:layout_marginTop="20dp"
         android:text="Update Contacts Table"
+        android:clickable="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button3" />
 
@@ -31,10 +33,11 @@
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="28dp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="28dp"
+        android:onClick="onClickGenerateReport"
         android:text="Generate Report"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button2" />
 

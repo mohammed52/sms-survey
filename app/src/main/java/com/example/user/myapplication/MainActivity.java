@@ -45,4 +45,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, BroadcastActivity.class);
         startActivity(intent);
     }
+
+    public void onClickGenerateReport(View view){
+        Log.d("MAP", "generating report...");
+    }
 }
