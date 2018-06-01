@@ -15,6 +15,17 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.math.BigInteger;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
+
 public class BroadcastActivity extends AppCompatActivity {
 
     @Override
@@ -26,43 +37,77 @@ public class BroadcastActivity extends AppCompatActivity {
     public void onClickBroadcastButtonListener(View view) {
         Log.v("MAP", "send sms ?");
 
-        SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage("+923137590210", null, "what is your name ?", null, null);
+        readMumineenData();
 
-//        ActivityCompat.requestPermissions(BroadcastActivity.this,
-//                new String[]{Manifest.permission.SEND_SMS},
-//                1);
     }
 
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
+    private List<MuminSample> muminSamples = new ArrayList<>();
 
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+    private void readMumineenData() {
+//        InputStream is = getResources().openRawResource(R.raw.filtered); work
+        InputStream is = null;
+        try {
+            is = new FileInputStream("/storage/sdcard/MAP/filtered.csv");
 
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                    Log.v("MAP", "permission granted");
-                    EditText edit = (EditText)findViewById(R.id.editText2);
-                    EditText edit1 = (EditText)findViewById(R.id.editText);
 
-                    SmsManager smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage(edit1.getText().toString(), null, edit.getText().toString(), null, null);
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(is, Charset.forName("UTF-8"))
+            );
+            String line = "";
+            try {
 
-                } else {
+                // step over header
+                reader.readLine();
 
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Toast.makeText(BroadcastActivity.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
+                while ((line = reader.readLine()) != null) {
+                    Log.d("MAP", "line: " + line + "\n");
+                    // split by ','
+                    String[] tokens = line.split(",");
+
+                    // read the data
+                    MuminSample sample = new MuminSample();
+                    sample.setIts(Integer.parseInt(tokens[0]));
+                    sample.setHofIts(Integer.parseInt(tokens[1]));
+                    sample.setAge(Integer.parseInt(tokens[2]));
+
+
+                    sample.setGender(tokens[3].toCharArray()[0]);
+                    sample.setMobileNo(new BigInteger(tokens[4]));
+                    sample.setFullName(tokens[5]);
+                    sample.setCountFamilyMembers(Integer.parseInt(tokens[6]));
+
+                    muminSamples.add(sample);
+//                    Log.d("MAP", "just created: " + sample);
+
                 }
-                return;
+            } catch (IOException e) {
+                Log.wtf("MAP", "Error reading data file on line " + line, e);
+                e.printStackTrace();
             }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
-            // other 'case' lines to check for other
-            // permissions this app might request
+        sendBulkSms();
+
+
+
+
+
+
+    }
+
+    private void sendBulkSms() {
+        Log.d("MAP", "lets get the phone numbers");
+
+        for (int i = 0; i < muminSamples.size(); i++) {
+            Log.d("MAP", muminSamples.get(i).getMobileNo().toString());
+            SmsManager sms = SmsManager.getDefault();
+
+            EditText smsField = (EditText)findViewById(R.id.editText2);
+            String smsText = muminSamples.get(i).getFullName() + "\n" + smsField.getText();
+
+            sms.sendTextMessage("+"+muminSamples.get(i).getMobileNo().toString(), null, smsText, null, null);
         }
     }
 }
