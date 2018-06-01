@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.renderscript.Element;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private List<MuminSample> muminSamples = new ArrayList<>();
 
     private void readMumineenData() {
-//        InputStream is = getResources().openRawResource(R.raw.filtered); working ?
+//        InputStream is = getResources().openRawResource(R.raw.filtered); work
         InputStream is = null;
         try {
             is = new FileInputStream("/storage/sdcard/MAP/filtered.csv");
@@ -102,6 +103,12 @@ public class MainActivity extends AppCompatActivity {
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        }
+
+        Log.d("MAP", "lets get the phone numbers");
+
+        for (int i = 0; i < muminSamples.size(); i++) {
+            Log.d("MAP", muminSamples.get(i).getMobileNo().toString());
         }
 
 
