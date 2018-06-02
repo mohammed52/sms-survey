@@ -2,6 +2,8 @@ package com.example.user.myapplication;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.renderscript.Element;
@@ -46,7 +48,34 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private List<MuminReplies> muminReplies = new ArrayList<>();
+
     public void onClickGenerateReport(View view){
         Log.d("MAP", "generating report...");
+        Cursor cursor = getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
+
+        if (cursor.moveToFirst()) { // must check the result to prevent exception
+            do {
+                String msgData = "";
+                MuminReplies replySample = new MuminReplies();
+
+                for(int idx=0;idx<cursor.getColumnCount();idx++)
+                {
+                    if (cursor.getColumnName(idx).matches("address")){
+                        replySample.setMobileNo(cursor.getString(idx));
+                    } else if(cursor.getColumnName(idx).matches("body")){
+                        replySample.setAttendanceCount(Integer.parseInt(cursor.getString(idx)));
+                    }
+                }
+//                Log.d("MAP", replySample.toString());
+                muminReplies.add(replySample);
+            } while (cursor.moveToNext());
+        } else {
+            // empty box, no SMS
+        }
+
+        Log.d("MAP", muminReplies.toString());
+
+
     }
 }

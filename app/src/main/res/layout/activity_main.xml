@@ -14,7 +14,7 @@
         android:layout_marginStart="28dp"
         android:layout_marginTop="28dp"
         android:text="Settings"
-        android:clickable="false"
+        android:enabled="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button4" />
 
@@ -25,7 +25,7 @@
         android:layout_marginStart="28dp"
         android:layout_marginTop="20dp"
         android:text="Update Contacts Table"
-        android:clickable="false"
+        android:enabled="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button3" />
 
